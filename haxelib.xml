@@ -1,4 +1,4 @@
-<project name="hxJson2" url="http://www.byteanvil.com" license="BSD">
+<project name="hxJson2" url="http://github.com/TheHippo/hxJson2" license="BSD">
     <user name="TheHippo"/>
     <description>hxJson2 is JSON decoding and encoding library. (haXe 2.x compatible)</description>
     <version name="0.9.5">Fixes uncode encoding and encoding. Solved some unicode issues for neko and php targets.</version>
