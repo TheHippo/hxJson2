@@ -56,7 +56,7 @@ class JSONToken {
 	 * @param value The value of the token
 	 */
 	public function new(?type:JSONTokenType,?value:Dynamic = null) {
-		this.type = type==null?UNKNOWN:type;
+		this.type = type==null?tUNKNOWN:type;
 		this.value = value;
 	}
 }

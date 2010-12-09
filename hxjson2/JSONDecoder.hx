@@ -41,19 +41,19 @@
 package hxjson2 ;
 
 enum JSONTokenType {	
-	UNKNOWN;	
-	COMMA;	
-	LEFT_BRACE;		
-	RIGHT_BRACE;		
-	LEFT_BRACKET;		
-	RIGHT_BRACKET;		
-	COLON;		
-	TRUE;		
-	FALSE;		
-	NULL;		
-	STRING;		
-	NUMBER;
-	NAN;
+	tUNKNOWN;	
+	tCOMMA;	
+	tLEFT_BRACE;		
+	tRIGHT_BRACE;		
+	tLEFT_BRACKET;		
+	tRIGHT_BRACKET;		
+	tCOLON;		
+	tTRUE;		
+	tFALSE;		
+	tNULL;		
+	tSTRING;		
+	tNUMBER;
+	tNAN;
 }
 
 class JSONDecoder {
@@ -114,15 +114,15 @@ class JSONDecoder {
 		// past the opening [
 		nextToken();		
 		// check to see if we have an empty array
-		if ( token.type == RIGHT_BRACKET ) {
+		if ( token.type == tRIGHT_BRACKET ) {
 			// we're done reading the array, so return it
 			return a;
 		}
 		else {
-			if (!strict && token.type == JSONTokenType.COMMA) {
+			if (!strict && token.type == JSONTokenType.tCOMMA) {
 				nextToken();
 				// check to see if we're reached the end of the array
-				if ( token.type == JSONTokenType.RIGHT_BRACKET ){
+				if ( token.type == JSONTokenType.tRIGHT_BRACKET ){
 					return a;	
 				}
 				else {
@@ -137,17 +137,17 @@ class JSONDecoder {
 			a.push ( parseValue() );		
 			// after the value there should be a ] or a ,
 			nextToken();			
-			if ( token.type == RIGHT_BRACKET ) {
+			if ( token.type == tRIGHT_BRACKET ) {
 				// we're done reading the array, so return it
 				return a;
-			} else if ( token.type == COMMA ) {
+			} else if ( token.type == tCOMMA ) {
 				// move past the comma and read another value
 				nextToken();
 				// Allow arrays to have a comma after the last element
 				// if the decoder is not in strict mode
 				if ( !strict ){
 					// Reached ",]" as the end of the array, so return it
-					if ( token.type == JSONTokenType.RIGHT_BRACKET ){
+					if ( token.type == JSONTokenType.tRIGHT_BRACKET ){
 						return a;
 					}
 				}
@@ -171,17 +171,17 @@ class JSONDecoder {
 		// grab the next token from the tokenizer
 		nextToken();		
 		// check to see if we have an empty object
-		if ( token.type == RIGHT_BRACE ) {
+		if ( token.type == tRIGHT_BRACE ) {
 			// we're done reading the object, so return it
 			return o;
 		}	// in non-strict mode an empty object is also a comma
 			// followed by a right bracket
 		else { 
-			if ( !strict && token.type == JSONTokenType.COMMA )	{
+			if ( !strict && token.type == JSONTokenType.tCOMMA )	{
 				// move past the comma
 				nextToken();				
 				// check to see if we're reached the end of the object
-				if ( token.type == JSONTokenType.RIGHT_BRACE )				{
+				if ( token.type == JSONTokenType.tRIGHT_BRACE )				{
 					return o;
 				}
 				else {
@@ -192,23 +192,23 @@ class JSONDecoder {
 		// deal with members of the object, and use an "infinite"
 		// loop because we could have any amount of members
 		while ( true ) {		
-			if ( token.type == STRING ) {
+			if ( token.type == tSTRING ) {
 				// the string value we read is the key for the object
 				key = Std.string(token.value);				
 				// move past the string to see what's next
 				nextToken();				
 				// after the string there should be a :
-				if ( token.type == COLON ) {					
+				if ( token.type == tCOLON ) {					
 					// move past the : and read/assign a value for the key
 					nextToken();
 					Reflect.setField(o,key,parseValue());					
 					// move past the value to see what's next
 					nextToken();					
 					// after the value there's either a } or a ,
-					if ( token.type == RIGHT_BRACE ) {
+					if ( token.type == tRIGHT_BRACE ) {
 						// // we're done reading the object, so return it
 						return o;						
-					} else if ( token.type == COMMA ) {
+					} else if ( token.type == tCOMMA ) {
 						// skip past the comma and read another member
 						nextToken();
 						
@@ -216,7 +216,7 @@ class JSONDecoder {
 						// if the decoder is not in strict mode
 						if ( !strict ){
 							// Reached ",}" as the end of the object, so return it
-							if ( token.type == JSONTokenType.RIGHT_BRACE )	{
+							if ( token.type == JSONTokenType.tRIGHT_BRACE )	{
 								return o;
 							}
 						}						
@@ -241,21 +241,21 @@ class JSONDecoder {
 		if ( token == null )
 			tokenizer.parseError( "Unexpected end of input" );
 		switch ( token.type ) {
-			case LEFT_BRACE:
+			case tLEFT_BRACE:
 				return parseObject();
-			case LEFT_BRACKET:
+			case tLEFT_BRACKET:
 				return parseArray();
-			case STRING:
+			case tSTRING:
 				return token.value;
-			case NUMBER:
+			case tNUMBER:
 				return token.value;
-			case TRUE:
+			case tTRUE:
 				return true;
-			case FALSE:
+			case tFALSE:
 				return false;
-			case NULL:
+			case tNULL:
 				return null;
-			case NAN:
+			case tNAN:
 				if (!strict)
 					return token.value;
 				else

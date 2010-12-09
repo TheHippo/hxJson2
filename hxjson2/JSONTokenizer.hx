@@ -87,33 +87,33 @@ class JSONTokenizer {
 		// examine the new character and see what we have...
 		switch ( ch ) {			
 			case '{':
-				token.type = LEFT_BRACE;
+				token.type = tLEFT_BRACE;
 				token.value = '{';
 				nextChar();
 			case '}':
-				token.type = RIGHT_BRACE;
+				token.type = tRIGHT_BRACE;
 				token.value = '}';
 				nextChar();
 			case '[':
-				token.type = LEFT_BRACKET;
+				token.type = tLEFT_BRACKET;
 				token.value = '[';
 				nextChar();					
 			case ']':
-				token.type = RIGHT_BRACKET;
+				token.type = tRIGHT_BRACKET;
 				token.value = ']';
 				nextChar();				
 			case ',':
-				token.type = COMMA;
+				token.type = tCOMMA;
 				token.value = ',';
 				nextChar();					
 			case ':':
-				token.type = COLON;
+				token.type = tCOLON;
 				token.value = ':';
 				nextChar();
 			case 't': // attempt to read true
 				var possibleTrue:String = "t" + nextChar() + nextChar() + nextChar();				
 				if ( possibleTrue == "true" ) {
-					token.type = TRUE;
+					token.type = tTRUE;
 					token.value = true;
 					nextChar();
 				} else {
@@ -122,7 +122,7 @@ class JSONTokenizer {
 			case 'f': // attempt to read false
 				var possibleFalse:String = "f" + nextChar() + nextChar() + nextChar() + nextChar();				
 				if ( possibleFalse == "false" ) {
-					token.type = FALSE;
+					token.type = tFALSE;
 					token.value = false;
 					nextChar();
 				} else {
@@ -131,7 +131,7 @@ class JSONTokenizer {
 			case 'n': // attempt to read null			
 				var possibleNull:String = "n" + nextChar() + nextChar() + nextChar();				
 				if ( possibleNull == "null" ) {
-					token.type = NULL;
+					token.type = tNULL;
 					token.value = null;
 					nextChar();
 				} else {
@@ -140,7 +140,7 @@ class JSONTokenizer {
 			case 'N': //attempt to read NAN
 				var possibleNAN:String = 'N' + nextChar() + nextChar();
 				if (possibleNAN == "NAN" || possibleNAN == "NaN") {
-					token.type = NAN;
+					token.type = tNAN;
 					token.value = Math.NaN;
 					nextChar();
 				}
@@ -252,7 +252,7 @@ class JSONTokenizer {
 		nextChar();		
 		// the token for the string we'll try to read
 		var token:JSONToken = new JSONToken();
-		token.type = STRING;
+		token.type = tSTRING;
 		// attach to the string to the token so we can return it
 		token.value = string;		
 		return token;
@@ -384,7 +384,7 @@ class JSONTokenizer {
 		if ( Math.isFinite( num ) && !Math.isNaN( num ) ) {
 			// the token for the number we'll try to read
 			var token:JSONToken = new JSONToken();
-			token.type = NUMBER;
+			token.type = tNUMBER;
 			token.value = num;
 			return token;
 		} else {
