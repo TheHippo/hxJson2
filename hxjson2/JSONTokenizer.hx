@@ -111,7 +111,14 @@ class JSONTokenizer {
 				token.value = ':';
 				nextChar();
 			case 't': // attempt to read true
-				var possibleTrue:String = "t" + nextChar() + nextChar() + nextChar();				
+				#if cpp
+				var possibleTrue:String = "t";
+				possibleTrue = possibleTrue + nextChar();
+				possibleTrue = possibleTrue + nextChar();
+				possibleTrue = possibleTrue + nextChar();
+				#else
+				var possibleTrue:String = "t" + (this.nextChar() + this.nextChar() + this.nextChar());
+				#end
 				if ( possibleTrue == "true" ) {
 					token.type = tTRUE;
 					token.value = true;
@@ -120,7 +127,15 @@ class JSONTokenizer {
 					parseError( "Expecting 'true' but found " + possibleTrue );
 				}
 			case 'f': // attempt to read false
-				var possibleFalse:String = "f" + nextChar() + nextChar() + nextChar() + nextChar();				
+				#if cpp
+				var possibleFalse = "f";
+				possibleFalse = possibleFalse + nextChar();
+				possibleFalse = possibleFalse + nextChar();
+				possibleFalse = possibleFalse + nextChar();
+				possibleFalse = possibleFalse + nextChar();
+				#else
+				var possibleFalse:String = "f" + nextChar() + nextChar() + nextChar() + nextChar();
+				#end				
 				if ( possibleFalse == "false" ) {
 					token.type = tFALSE;
 					token.value = false;
@@ -128,8 +143,15 @@ class JSONTokenizer {
 				} else {
 					parseError( "Expecting 'false' but found " + possibleFalse );
 				}
-			case 'n': // attempt to read null			
+			case 'n': // attempt to read null
+				#if cpp
+				var possibleNull:String = "n";
+				possibleNull = possibleNull + nextChar();
+				possibleNull = possibleNull + nextChar();
+				possibleNull = possibleNull + nextChar();
+				#else
 				var possibleNull:String = "n" + nextChar() + nextChar() + nextChar();				
+				#end
 				if ( possibleNull == "null" ) {
 					token.type = tNULL;
 					token.value = null;
@@ -138,7 +160,13 @@ class JSONTokenizer {
 					parseError( "Expecting 'null' but found " + possibleNull );
 				}
 			case 'N': //attempt to read NAN
+				#if cpp
+				var possibleNAN = "N";
+				possibleNAN = possibleNAN + nextChar();
+				possibleNAN = possibleNAN + nextChar();
+				#else
 				var possibleNAN:String = 'N' + nextChar() + nextChar();
+				#end
 				if (possibleNAN == "NAN" || possibleNAN == "NaN") {
 					token.type = tNAN;
 					token.value = Math.NaN;
