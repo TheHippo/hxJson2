@@ -211,6 +211,8 @@ class JSONTokenizer {
 						string += '"';					
 					case '/':	// solidus
 						string += "/";
+					case '\\/':	// escaped solidus
+						string += "/";
 					case '\\':	// reverse solidus
 						string += '\\';				
 					case 'n':	// newline

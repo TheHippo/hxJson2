@@ -141,6 +141,8 @@ class JSONEncoder {
 			}
 			#end
 			switch ( ch ) {			
+				case '/':	// solidus
+					s += "\\/";
 				case '"':	// quotation mark
 					s += "\\\"";					
 				case '\\':	// reverse solidus
