@@ -180,7 +180,7 @@ class JSONEncoder {
 						}
 						//var zeroPad:String = hexCode.length == 2 ? "00" : "000";						
 						// create the unicode escape sequence with 4 hex digits
-						s += "\\u" + zeroPad + hexCode.toLowerCase();
+						s += "\\u" + zeroPad + hexCode;
 					} else {					
 						// no need to do any special encoding, just pass-through
 						s += ch;						
