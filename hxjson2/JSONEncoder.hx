@@ -141,6 +141,8 @@ class JSONEncoder {
 			}
 			#end
 			switch ( ch ) {			
+				case '/':	// solidus
+					s += "\\/";
 				case '"':	// quotation mark
 					s += "\\\"";					
 				case '\\':	// reverse solidus
@@ -178,7 +180,7 @@ class JSONEncoder {
 						}
 						//var zeroPad:String = hexCode.length == 2 ? "00" : "000";						
 						// create the unicode escape sequence with 4 hex digits
-						s += "\\u" + zeroPad + hexCode;
+						s += "\\u" + zeroPad + hexCode.toLowerCase();
 					} else {					
 						// no need to do any special encoding, just pass-through
 						s += ch;						
