@@ -3,5 +3,5 @@
     <tag v="json"/>
     <tag v="cross"/>
     <description>hxJson2 is JSON decoding and encoding library. (haXe 2.x compatible)</description>
-    <version name="0.9.7">hxcpp fixes</version>
+    <version name="0.9.8">hxcpp fixes</version>
 </project>
