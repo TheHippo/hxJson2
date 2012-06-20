@@ -89,15 +89,17 @@ class JSONEncoder {
 			return value ? "true" : "false";
 		} else if ( Std.is(value,Array)) {		
 			// call the helper method to convert an array
-			return arrayToString(cast(value,Array<Dynamic>));		
-		} else if (Std.is(value,Dynamic) && value != null ) {		
+			return arrayToString(cast(value,Array<Dynamic>));
+		} else if (Type.getEnum(value) != null) {
+			return Std.string(Type.enumIndex(value));
+		} else if (Std.is(value,Dynamic) && value != null ) {
 			// call the helper method to convert an object
-      var cls = Type.getClass (value);
-      if (null == cls) {
-			  return objectToString( value );
-      } else {
-        return instanceToString( value, cls );
-      }
+			var cls = Type.getClass (value);
+			if (null == cls) {
+				return objectToString( value );
+			} else {
+				return instanceToString( value, cls );
+			}
 		}
 		return "null";
 	}
