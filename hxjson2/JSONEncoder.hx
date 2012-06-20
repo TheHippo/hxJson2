@@ -92,7 +92,12 @@ class JSONEncoder {
 			return arrayToString(cast(value,Array<Dynamic>));		
 		} else if (Std.is(value,Dynamic) && value != null ) {		
 			// call the helper method to convert an object
-			return objectToString( value );
+      var cls = Type.getClass (value);
+      if (null == cls) {
+			  return objectToString( value );
+      } else {
+        return instanceToString( value, cls );
+      }
 		}
 		return "null";
 	}
@@ -263,4 +268,27 @@ class JSONEncoder {
 		}		
 		return "{" + s + "}";
 	}	
+
+  /**
+   * Converts an instance object to it's JSON string equivalent
+   *
+   * @param o The instance object to convert
+   * @param cls The class of instance object
+   * @return The JSON string representation of <code>o</code>
+   */
+  private function instanceToString (o : Dynamic, cls : Class <Dynamic>) : String {
+    var s : String = "";
+    var value : Dynamic;
+
+    for (key in Type.getInstanceFields (cls)) {
+      value = Reflect.field (o, key);
+      if (!Reflect.isFunction (value)) {
+        if (s.length > 0) {
+          s += ",";
+        }
+        s += escapeString (key) + ":" + convertToString (value);
+      }
+    }
+    return "{" + s + "}";
+  }
 }
